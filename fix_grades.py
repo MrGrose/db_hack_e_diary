@@ -7,7 +7,7 @@ from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from dotenv import load_dotenv
 
 
-PRISES = [
+PRAISES = [
     'Молодец!', 'Отлично!','Хорошо!','Гораздо лучше, чем я ожидал!','Ты меня приятно удивил!','Великолепно!',
     'Прекрасно!','Ты меня очень обрадовал!','Именно этого я давно ждал от тебя!','Сказано здорово – просто и ясно!',
     'Ты, как всегда, точен!','Очень хороший ответ!','Талантливо!','Ты сегодня прыгнул выше головы!','Я поражен!',
@@ -31,7 +31,7 @@ def remove_chastisements(schoolkid):
     
     
 def create_commendation(schoolkid, lesson):
-    text_praise = random.choice(PRISES)
+    text_praise = random.choice(PRAISES)
 
     subject_at_school = Lesson.objects.filter(
         year_of_study=schoolkid.year_of_study,
