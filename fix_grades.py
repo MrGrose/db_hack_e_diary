@@ -19,10 +19,7 @@ PRAISES = [
     
     
 def fix_marks(schoolkid):
-    poor_grades = Mark.objects.filter(schoolkid=schoolkid, points__in=[2,3])
-    for estimation in poor_grades:
-        estimation.points = 5
-        estimation.save()
+    poor_grades = Mark.objects.filter(schoolkid=schoolkid, points__in=[2,3]).update(points=5)
         
         
 def remove_chastisements(schoolkid):
