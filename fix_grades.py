@@ -45,6 +45,11 @@ def create_commendation(schoolkid, lesson):
             teacher=subject_at_school.teacher
         )
 
+
+def find_student_by_name(name):
+    student = Schoolkid.objects.get(full_name=name)
+    return student
+
     
 def main():
     load_dotenv()
@@ -57,14 +62,14 @@ def main():
         return
     
     try:
-        student = Schoolkid.objects.get(full_name=name)
+        student = find_student_by_name(name)
         fix_marks(student)
         remove_chastisements(student)
         create_commendation(student, lesson)
-    except MultipleObjectsReturned:
+    except Schoolkid.MultipleObjectsReturned:
         print(f"Найдены ученики с именем '{name}'. Пожалуйста, уточните запрос.")
         return None
-    except ObjectDoesNotExist:
+    except Schoolkid.DoesNotExist:
         print(f"Ученика с именем '{name}' не существует.")
         return None
     
