@@ -3,7 +3,6 @@ import random
 
 from datacenter.models import (Chastisement, Commendation, Lesson, Mark,
                                Schoolkid)
-from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from dotenv import load_dotenv
 
 
@@ -47,10 +46,14 @@ def create_commendation(schoolkid, lesson):
 
 
 def find_student_by_name(name):
-    student = Schoolkid.objects.get(full_name=name)
-    return student
+    try:
+        return Schoolkid.objects.get(full_name=name)
+    except Schoolkid.MultipleObjectsReturned:
+        raise Schoolkid.MultipleObjectsReturned
+    except Schoolkid.DoesNotExist:
+        raise Schoolkid.DoesNotExist
 
-    
+
 def main():
     load_dotenv()
     
@@ -60,18 +63,14 @@ def main():
     if not name or not lesson:
         print("Не указаны переменные окружения.")
         return
-    
+
     try:
         student = find_student_by_name(name)
         fix_marks(student)
         remove_chastisements(student)
         create_commendation(student, lesson)
-    except Schoolkid.MultipleObjectsReturned:
-        print(f"Найдены ученики с именем '{name}'. Пожалуйста, уточните запрос.")
-        return None
-    except Schoolkid.DoesNotExist:
-        print(f"Ученика с именем '{name}' не существует.")
-        return None
+    except Exception as error:
+        raise ValueError(f"Произошла ошибка: {error}")
     
 
 if __name__ == '__main__':
